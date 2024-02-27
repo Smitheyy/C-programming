@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+
+typedef struct liczba{
+    int a;
+    float b;
+}N;
+
+
+int main(void)
+{
+    int num_of_structs, i;
+    long filesize=0;
+    N data;
+    FILE *file = fopen("B.bin", "rb");
+
+    if(file==NULL){
+        printf("You can't open your file for reading...");
+        return 1;
+    }
+
+    fseek(file, 0, SEEK_END);
+    ftell(file);
+    filesize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+    num_of_structs = filesize / sizeof(data);
+
+    for(i = 0; i<num_of_structs;i++){
+        fread(&data, sizeof(data), 1, file);
+        printf("\n");
+        printf("Structure %d:\nside a = %d\nside b = %f\n", i+1, data.a, data.b);
+    }
+    fclose(file);
+    return 0;
+}
